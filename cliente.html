@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cliente - Conversor de Moneda</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js"></script>
+    <style>
+        /* Estilos */
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Cliente - Conversor de Moneda</h1>
+        <label for="exchangeRateDisplay">Tasa de Cambio (referencia):</label>
+        <input type="text" id="exchangeRateDisplay" readonly><br><br>
+        
+        <label for="chileanPeso">Pesos Chilenos:</label>
+        <input type="number" id="chileanPeso" step="0.01" required><br><br>
+
+        <button onclick="convertCurrency()">Convertir</button>
+
+        <h2>Resultado: <span id="result">0</span> Bolivianos</h2>
+        <br><br>
+        <a href="index.html">Volver al Inicio</a>
+    </div>
+
+    <script>
+        const secretKey = 'clave_secreta'; // Usa la misma clave secreta
+
+        function convertCurrency() {
+            var chileanPeso = document.getElementById("chileanPeso").value;
+            var encryptedExchangeRate = localStorage.getItem('exchangeRateTransfer');
+            if (encryptedExchangeRate && chileanPeso) {
+                var exchangeRate = CryptoJS.AES.decrypt(encryptedExchangeRate, secretKey).toString(CryptoJS.enc.Utf8);
+                var result = chileanPeso * exchangeRate;
+                document.getElementById("result").innerText = result.toFixed(2);
+            } else {
+                alert("Por favor, asegúrate de que se haya ingresado la tasa de cambio y la cantidad de pesos chilenos.");
+            }
+        }
+
+        window.onload = function() {
+            var encryptedExchangeRate = localStorage.getItem('exchangeRateTransfer');
+            if (encryptedExchangeRate) {
+                var exchangeRate = CryptoJS.AES.decrypt(encryptedExchangeRate, secretKey).toString(CryptoJS.enc.Utf8);
+                document.getElementById("exchangeRateDisplay").value = exchangeRate;
+                console.log(`Tasa de Cambio (Transferencia): ${exchangeRate}`); // Agregar log para depuración
+            } else {
+                alert("La tasa de cambio no ha sido configurada por el administrador.");
+            }
+        }
+    </script>
+</body>
+</html>
