@@ -92,43 +92,6 @@
                 const content = atob(data.content);
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(content, 'text/html');
-                const tasaTransferencia = doc.querySelector('h1:nth-of-type(1)').textContent.split(': ')[1];
                 const tasaDepositos = doc.querySelector('h1:nth-of-type(2)').textContent.split(': ')[1];
-                localStorage.setItem('exchangeRateTransfer', CryptoJS.AES.encrypt(tasaTransferencia, secretKey).toString());
                 localStorage.setItem('exchangeRateDeposits', CryptoJS.AES.encrypt(tasaDepositos, secretKey).toString());
-                document.getElementById("exchangeRateDisplay").innerText = `Tasa de Cambio (Transferencia): ${tasaTransferencia} y Depósito: ${tasaDepositos}`;
-            } else {
-                alert("Error al cargar los datos desde GitHub.");
-            }
-        }
-
-        function convert() {
-            var amount = document.getElementById("amount").value;
-            var encryptedExchangeRate = localStorage.getItem('exchangeRateDeposits');
-            if (encryptedExchangeRate) {
-                var exchangeRate = CryptoJS.AES.decrypt(encryptedExchangeRate, secretKey).toString(CryptoJS.enc.Utf8);
-                var result = amount * exchangeRate;
-                document.getElementById("result").innerText = "Monto en Pesos Bolivianos: " + result.toFixed(2);
-                document.getElementById("exchangeRateDisplay").innerText = "Tasa de Cambio: " + exchangeRate;
-            } else {
-                document.getElementById("result").innerText = "El administrador no ha estipulado la tasa de cambio";
-                document.getElementById("exchangeRateDisplay").innerText = "";
-            }
-        }
-
-        window.onload = function() {
-            fetchDataFromGitHub();
-            var encryptedTransfer = localStorage.getItem('exchangeRateTransfer');
-            var encryptedDeposits = localStorage.getItem('exchangeRateDeposits');
-            if (encryptedTransfer) {
-                var exchangeRateTransfer = CryptoJS.AES.decrypt(encryptedTransfer, secretKey).toString(CryptoJS.enc.Utf8);
-                document.getElementById("exchangeRateDisplay").innerText += " | Tasa de Cambio (Transferencia): " + exchangeRateTransfer;
-            }
-            if (encryptedDeposits) {
-                var exchangeRateDeposits = CryptoJS.AES.decrypt(encryptedDeposits, secretKey).toString(CryptoJS.enc.Utf8);
-                document.getElementById("exchangeRateDisplay").innerText += " | Tasa de Cambio (Depósito): " + exchangeRateDeposits;
-            }
-        }
-    </script>
-</body>
-</html>
+                document.getElementById("exchangeRateDisplay").innerText = `Tasa de[_{{{CITATION{{{_1{](https://github.com/la9una/web/tree/ba1073ae044ebb7b538a3b13f0f9598f7c410bb6/docs%2Fbootstrap%2Falignci.md)[_{{{CITATION{{{_2{](https://github.com/CLONATORE/markdowns/tree/82cfb03683ceb807a7091de48045e6a7485acd72/webpack.md)
