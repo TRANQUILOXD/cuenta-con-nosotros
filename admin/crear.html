@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+        }
+        input {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        button {
+            padding: 10px;
+            width: 100%;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Registro</h1>
+        <input type="email" id="email" placeholder="Correo electrónico" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <input type="text" id="secretNumber" placeholder="Número Secreto" required>
+        <button id="signupButton">Registrarse</button>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+        const supabaseUrl = 'https://rqfqiaovgjaufuojfmsk.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxZnFpYW92Z2phdWZ1b2pmbXNrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg3ODA5OTEsImV4cCI6MjA1NDM1Njk5MX0.05WXFwJg4JK77nEVxVUTohV-K0OCtPlcZ5yl7EiUxhk'; // Reemplaza con tu API Key
+        const supabase = createClient(supabaseUrl, supabaseKey);
+
+        document.getElementById("signupButton").addEventListener("click", async () => {
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            const secretNumber = document.getElementById("secretNumber").value;
+
+            // Registrar el usuario en Supabase
+            const { user, error } = await supabase.auth.signUp({
+                email: email,
+                password: password
+            });
+
+            if (error) {
+                console.error('Error al registrarse:', error);
+                alert('Error al registrarse: ' + error.message);
+            } else {
+                // Guardar el número secreto y otros datos en la tabla usuarios
+                const { data, error: insertError } = await supabase
+                    .from('usuarios')
+                    .insert([{ email: email, password_hash: password, secret_number: secretNumber }]);
+
+                if (insertError) {
+                    console.error('Error al guardar el usuario:', insertError);
+                    alert('Error al guardar el usuario: ' + insertError.message);
+                } else {
+                    alert('Registro exitoso. Por favor, verifica tu correo electrónico para confirmar tu cuenta.');
+                }
+            }
+        });
+    </script>
+</body>
+</html>
