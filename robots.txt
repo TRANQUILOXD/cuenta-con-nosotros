@@ -1,0 +1,16 @@
+User-agent: *
+Disallow: /index.html/
+Disallow: /estilo.css/
+Disallow: /README.md/
+Disallow: /salar.jpeg/
+Disallow: /admin/admin.html
+Disallow: /admin/crear.html
+Disallow: /admin/estilo.css
+Disallow: /admin/index.html
+Disallow: /admin/opciones.html
+Disallow: /admin/scripts.js
+
+Allow: /cliente/index.html/
+Allow: /cliente/cliente.html
+Allow: /cliente/depositos.html
+
